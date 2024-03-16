@@ -18,6 +18,7 @@ function getDistance(Aevent, target) {
 
 function getDistanceHint(distance) {
     if (distance < 10) {
+        color = "#ff0000";
         return "Пече!";
     } else if (distance < 20) {
         return "Дуже гаряче";
@@ -48,9 +49,31 @@ const target = {
 };
 
 const mapElement = document.getElementById("map");
+
+const ctx = mapElement.getContext("2d");
+
+let color;
 mapElement.addEventListener("click", (event) => {
     click++; // click = click + 1
     // console.log(click);
+
+    // Draw arc ////////////////////////////////////
+    const rect = mapElement.getBoundingClientRect();
+
+    let posX = event.clientX - rect.left;
+    let posY = event.clientY - rect.top;
+
+    // "#ff0000" = "#f00"
+    ctx.fillStyle = color;
+
+    ctx.beginPath();
+
+    ctx.arc(posX, posY, 5, 0, 2 * Math.PI);
+
+    ctx.fill();
+
+    //////////////////////////////////////////////
+
 
     const distance = getDistance(event, target);
     const distanceHint = getDistanceHint(distance);
